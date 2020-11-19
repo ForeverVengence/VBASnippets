@@ -8,3 +8,25 @@ Sub waitFor(ie As InternetExplorer)
         Application.Wait Now + TimeValue("00:00:01")
     Loop Until Not ie.Busy And ie.readystate = 4
 End Sub
+
+Function attach(ie As Object, Optional urlPart As String) As Boolean
+    Dim o As Object
+    Dim x As Long
+    Dim explorers As Object
+    Dim name As String
+    Set explorers = CreateObject("Shell.application").Windows
+    For x = explorers.Count - 1 To 0 Step -1
+       name = "Empty"
+       On Error Resume Next
+       name = explorers((x)).name
+       On Error GoTo 0
+       If name = "Internet Explorer" Then
+          If InStr(1, explorers((x)).LocationURL, urlPart, vbTextCompare) Then
+               Set ie = explorers((x))
+               attach = True
+               Exit For
+          End If
+       End If
+    Next
+    
+End Function
