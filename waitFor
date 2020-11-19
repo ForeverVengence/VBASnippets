@@ -1,0 +1,10 @@
+Sub waitFor(ie As InternetExplorer)
+    Do
+        Do
+            Application.Wait Now + TimeValue("00:00:01")
+            attach ie
+            DoEvents
+        Loop Until Not ie.Busy And ie.readystate = 4
+        Application.Wait Now + TimeValue("00:00:01")
+    Loop Until Not ie.Busy And ie.readystate = 4
+End Sub
