@@ -30,3 +30,23 @@ Function attach(ie As Object, Optional urlPart As String) As Boolean
     Next
     
 End Function
+
+
+' Returns the number of the HTML element specified by tagname and identifying text
+Function getTagNumber(ie As InternetExplorer, tagName As String, Optional identifyingText As String, Optional startAtTagNumber As Long = 0) As Long
+  Dim x As Long
+  Dim t As Object
+  For x = startAtTagNumber To ie.Document.all.Length - 1
+     Set t = ie.Document.all(x)
+     If UCase(t.tagName) = UCase(tagName) Then
+        'we found the right kind of tag, check to see if it has the right text
+        'Debug.Print t.outerHTML
+        If InStr(1, t.outerhtml, identifyingText) > 0 Then
+          'we found the right kind fo tag with the right identifying text, return the number
+          getTagNumber = x
+          Exit Function
+        End If
+     End If
+  Next
+  getTagNumber = -1 ' sentinal value indicating the tag was not found
+End Function
